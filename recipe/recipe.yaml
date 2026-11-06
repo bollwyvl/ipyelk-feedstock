@@ -4,7 +4,12 @@ schema_version: 1
 context:
   version: "3.0.0"
   python_check_max: "3.15"
-  js_version: ${{ version.replace('rc', '-rc').replace('a', '-alpha') | replace('b', '-beta') }}
+  jupyterlab_min: "4.1"
+  jupyterlab_check_max: "4.6"
+  js_version: ${{ version | replace('rc', '-rc') | replace('a', '-alpha') | replace('b', '-beta') }}
+  grep: ${{ "grep -iE " if unix else "findstr /r /c:"}}
+  js_ext_test: |-
+    jupyter labextension list  2>&1 | ${{ grep }}"@jupyrdf/jupyter-elk.*v${{ js_version | replace('.', '\\.') }}.*OK"
 
 package:
   name: ipyelk
@@ -32,7 +37,7 @@ requirements:
     - pydantic >=2.12,<3
     - python >=${{ python_min }}
   run_constraints:
-    - jupyterlab >=${{ jupyterlab_min }},<${{ jupyterlab_max }}
+    - jupyterlab >=${{ jupyterlab_min }}
 
 tests:
   - package_contents:
@@ -64,7 +69,15 @@ tests:
         - python ${{ python_min }}.*
     script:
       - jupyter labextension list
-      - jupyter labextension list 1>labextensions 2>&1 | ${{ "grep -iE " if unix else "findstr /r /c:"}}"@jupyrdf/jupyter-elk.*v${{ js_version | replace('.', '\\.') }}.*OK"
+      - ${{ js_ext_test }}
+  - requirements:
+      run:
+        - jupyterlab ${{ jupyterlab_check_max }}.*
+        - pip
+        - python ${{ python_check_max }}.*
+    script:
+      - jupyter labextension list
+      - ${{ js_ext_test }}
 
 about:
   summary: ELK widget for Jupyter

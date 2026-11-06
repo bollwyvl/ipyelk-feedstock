@@ -8,7 +8,7 @@ context:
   jupyterlab_max: "5"
   jupyterlab_check_max: "4.6"
   js_version: ${{ version | replace('rc', '-rc') | replace('a', '-alpha') | replace('b', '-beta') }}
-  grep: ${{ "grep -iE " if unix else "findstr /r /c:"}}
+  grep: ${{ "grep -iE " if unix else "findstr /r /c:" }}
   js_ext_test: |-
     jupyter labextension list  2>&1 | ${{ grep }}"@jupyrdf/jupyter-elk.*v${{ js_version | replace('.', '\\.') }}.*OK"
 

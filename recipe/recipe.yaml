@@ -43,7 +43,7 @@ tests:
   - package_contents:
       strict: true
       files:
-        - share/jupyter/labextensions/@jupyrdf/jupyter-elk
+        - share/jupyter/labextensions/@jupyrdf/jupyter-elk/**
       site_packages:
         - ipyelk/**
         - ipyelk-${{ version }}.dist-info/**

@@ -5,6 +5,7 @@ context:
   version: "3.0.0"
   python_check_max: "3.15"
   jupyterlab_min: "4.1"
+  jupyterlab_max: "5"
   jupyterlab_check_max: "4.6"
   js_version: ${{ version | replace('rc', '-rc') | replace('a', '-alpha') | replace('b', '-beta') }}
   grep: ${{ "grep -iE " if unix else "findstr /r /c:"}}
@@ -37,7 +38,7 @@ requirements:
     - pydantic >=2.12,<3
     - python >=${{ python_min }}
   run_constraints:
-    - jupyterlab >=${{ jupyterlab_min }}
+    - jupyterlab >=${{ jupyterlab_min }},<${{ jupyterlab_max }}
 
 tests:
   - package_contents:
